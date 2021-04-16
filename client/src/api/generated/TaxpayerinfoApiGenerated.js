@@ -29,7 +29,6 @@ class TaxpayerinfoApiGenerated {
   /**
   * TaxpayerinfoService.create
   *   @description CRUD ACTION create
-  *   @param Taxpayerinfo obj Object to insert
   *
   */
   static createTaxpayerinfo(taxpayerinfo) {
@@ -45,7 +44,7 @@ class TaxpayerinfoApiGenerated {
   /**
   * TaxpayerinfoService.delete
   *   @description CRUD ACTION delete
-  *   @param ObjectId id Id Taxpayerinfo
+  *   @param ObjectId id Id
   *
   */
   static deleteTaxpayerinfo(id) {
@@ -61,7 +60,7 @@ class TaxpayerinfoApiGenerated {
   /**
   * TaxpayerinfoService.get
   *   @description CRUD ACTION get
-  *   @returns Taxpayerinfo
+  *   @param ObjectId id Id resource
   *
   */
   static getOneTaxpayerinfo(id) {
@@ -77,7 +76,6 @@ class TaxpayerinfoApiGenerated {
   /**
   * TaxpayerinfoService.list
   *   @description CRUD ACTION list
-  *   @returns ARRAY OF Taxpayerinfo
   *
   */
   static getTaxpayerinfoList() {
@@ -93,25 +91,7 @@ class TaxpayerinfoApiGenerated {
   /**
   * TaxpayerinfoService.update
   *   @description CRUD ACTION update
-  *   @param ObjectId id Id Taxpayerinfo
-  *   @returns Taxpayerinfo
-  *
-  */
-  static saveTaxpayerinfo(taxpayerinfo) {
-    return axios.post(TaxpayerinfoApiGenerated.contextUrl + "/" + taxpayerinfo._id, taxpayerinfo )
-      .then(response => {
-        return response.data;
-      })
-      .catch(error => {
-        throw error;
-      });
-  }
-
-  /**
-  * TaxpayerinfoService.update
-  *   @description CRUD ACTION update
-  *   @param ObjectId id Id Taxpayerinfo
-  *   @returns Taxpayerinfo
+  *   @param ObjectId id Id
   *
   */
   static saveTaxpayerinfo(taxpayerinfo) {

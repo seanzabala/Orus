@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  x-skaffolder-id-project: 6076b8dca3e0491123245d0d
+  x-skaffolder-id-project: 60794f54a3e0491123246c92
   title: Orus
   description: You can obtain JWT token from login API
   version: 0.1
@@ -78,9 +78,9 @@ paths:
           description: OK
   /taxpayerinfo:
     post:
-      x-skaffolder-id: 6076bd5ba3e0491123245dad
+      x-skaffolder-id: 60794fb0a3e0491123246d0a
       x-skaffolder-name: create
-      x-skaffolder-id-resource: 6076bd16a3e0491123245da6
+      x-skaffolder-id-resource: 60794fa8a3e0491123246d07
       x-skaffolder-resource: Taxpayerinfo
       x-skaffolder-crudAction: create
       x-skaffolder-crudType: 
@@ -92,14 +92,6 @@ paths:
       summary: CRUD ACTION create
       tags:
         - Taxpayerinfo
-      parameters:
-        - name: obj
-          x-skaffolder-type: Taxpayerinfo
-          in: path
-          description: Object to insert
-          required: true
-          schema:
-            type: Taxpayerinfo
       responses:
         "200":
           description: OK
@@ -118,64 +110,16 @@ paths:
                   type: number
                 BirthDateOrgDate:
                   type: integer
-                BirthPlace:
-                  type: string
-                Citizenship:
-                  type: string
-                CivilStatus:
-                  type: boolean
-                DateOfArrivalInPhilippines:
-                  type: integer
-                EmailAddress:
-                  type: string
-                FathersName:
-                  type: string
-                FaxNo:
-                  type: number
-                FirstName:
-                  type: string
-                Gender:
-                  type: boolean
-                IDEffectiveDate:
-                  type: integer
-                IDExpiryDate:
-                  type: integer
-                IDIssuer:
-                  type: string
-                IDNo:
-                  type: number
-                IDType:
-                  type: boolean
-                IssuePlaceCountry:
-                  type: string
-                LandlineNo:
-                  type: number
-                LastName:
-                  type: string
-                MiddleName:
-                  type: string
-                MobileNo:
-                  type: number
-                MothersMaidenName:
-                  type: string
-                NickName:
-                  type: string
-                PrefferedContactType:
-                  type: boolean
-                RegisteredName:
-                  type: string
-                Suffix:
-                  type: string
     get:
-      x-skaffolder-id: 6076bd49a3e0491123245daa
+      x-skaffolder-id: 60794fb0a3e0491123246d11
       x-skaffolder-name: list
-      x-skaffolder-id-resource: 6076bd16a3e0491123245da6
+      x-skaffolder-id-resource: 60794fa8a3e0491123246d07
       x-skaffolder-resource: Taxpayerinfo
       x-skaffolder-crudAction: list
       x-skaffolder-crudType: 
       x-skaffolder-description: CRUD ACTION list
       x-skaffolder-returnDesc: 
-      x-skaffolder-returnType: ARRAY OF Taxpayerinfo
+      x-skaffolder-returnType: 
       x-skaffolder-url: /
       x-skaffolder-roles: []
       summary: CRUD ACTION list
@@ -192,9 +136,9 @@ paths:
                   $ref: "#/components/schemas/Taxpayerinfo"
   "/taxpayerinfo/{id}":
     delete:
-      x-skaffolder-id: 6076bd67a3e0491123245daf
+      x-skaffolder-id: 60794fb0a3e0491123246d10
       x-skaffolder-name: delete
-      x-skaffolder-id-resource: 6076bd16a3e0491123245da6
+      x-skaffolder-id-resource: 60794fa8a3e0491123246d07
       x-skaffolder-resource: Taxpayerinfo
       x-skaffolder-crudAction: delete
       x-skaffolder-crudType: 
@@ -210,7 +154,7 @@ paths:
         - name: id
           x-skaffolder-type: ObjectId
           in: path
-          description: Id Taxpayerinfo
+          description: Id
           required: true
           schema:
             type: string
@@ -218,47 +162,25 @@ paths:
         "200":
           description: OK
     get:
-      x-skaffolder-id: 6076bd31a3e0491123245da8
+      x-skaffolder-id: 60794fb0a3e0491123246d0c
       x-skaffolder-name: get
-      x-skaffolder-id-resource: 6076bd16a3e0491123245da6
+      x-skaffolder-id-resource: 60794fa8a3e0491123246d07
       x-skaffolder-resource: Taxpayerinfo
       x-skaffolder-crudAction: get
       x-skaffolder-crudType: 
       x-skaffolder-description: CRUD ACTION get
       x-skaffolder-returnDesc: 
-      x-skaffolder-returnType: Taxpayerinfo
+      x-skaffolder-returnType: 
       x-skaffolder-url: /{id}
       x-skaffolder-roles: []
       summary: CRUD ACTION get
-      tags:
-        - Taxpayerinfo
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Taxpayerinfo"
-    post:
-      x-skaffolder-id: 6076bd53a3e0491123245dab
-      x-skaffolder-name: update
-      x-skaffolder-id-resource: 6076bd16a3e0491123245da6
-      x-skaffolder-resource: Taxpayerinfo
-      x-skaffolder-crudAction: update
-      x-skaffolder-crudType: 
-      x-skaffolder-description: CRUD ACTION update
-      x-skaffolder-returnDesc: 
-      x-skaffolder-returnType: Taxpayerinfo
-      x-skaffolder-url: /{id}
-      x-skaffolder-roles: []
-      summary: CRUD ACTION update
       tags:
         - Taxpayerinfo
       parameters:
         - name: id
           x-skaffolder-type: ObjectId
           in: path
-          description: Id Taxpayerinfo
+          description: Id resource
           required: true
           schema:
             type: string
@@ -269,22 +191,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Taxpayerinfo"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Taxpayerinfo"
     post:
-      x-skaffolder-id: 6076bd6fa3e0491123245db1
+      x-skaffolder-id: 60794fb0a3e0491123246d0b
       x-skaffolder-name: update
-      x-skaffolder-id-resource: 6076bd16a3e0491123245da6
+      x-skaffolder-id-resource: 60794fa8a3e0491123246d07
       x-skaffolder-resource: Taxpayerinfo
       x-skaffolder-crudAction: update
       x-skaffolder-crudType: 
       x-skaffolder-description: CRUD ACTION update
       x-skaffolder-returnDesc: 
-      x-skaffolder-returnType: Taxpayerinfo
+      x-skaffolder-returnType: 
       x-skaffolder-url: /{id}
       x-skaffolder-roles: []
       summary: CRUD ACTION update
@@ -294,7 +210,7 @@ paths:
         - name: id
           x-skaffolder-type: ObjectId
           in: path
-          description: Id Taxpayerinfo
+          description: Id
           required: true
           schema:
             type: string
@@ -313,9 +229,9 @@ paths:
               $ref: "#/components/schemas/Taxpayerinfo"
   "/user/{id}/changePassword":
     post:
-      x-skaffolder-id: 6076b8dca3e0491123245d1a
+      x-skaffolder-id: 60794f54a3e0491123246c9f
       x-skaffolder-name: changePassword
-      x-skaffolder-id-resource: 6076b8dca3e0491123245d17
+      x-skaffolder-id-resource: 60794f54a3e0491123246c9c
       x-skaffolder-resource: User
       x-skaffolder-crudAction: 
       x-skaffolder-crudType: 
@@ -324,7 +240,7 @@ paths:
       x-skaffolder-returnType: object
       x-skaffolder-url: /{id}/changePassword
       x-skaffolder-roles:
-        - 6076b8dca3e0491123245d19
+        - 60794f54a3e0491123246c9e
       summary: Change password of user from admin
       tags:
         - User
@@ -333,9 +249,9 @@ paths:
           description: OK
   /user:
     post:
-      x-skaffolder-id: 6076b8dca3e0491123245d1f
+      x-skaffolder-id: 60794f54a3e0491123246ca2
       x-skaffolder-name: create
-      x-skaffolder-id-resource: 6076b8dca3e0491123245d17
+      x-skaffolder-id-resource: 60794f54a3e0491123246c9c
       x-skaffolder-resource: User
       x-skaffolder-crudAction: create
       x-skaffolder-crudType: 
@@ -374,9 +290,9 @@ paths:
                 username:
                   type: string
     get:
-      x-skaffolder-id: 6076b8dca3e0491123245d1b
+      x-skaffolder-id: 60794f54a3e0491123246ca7
       x-skaffolder-name: list
-      x-skaffolder-id-resource: 6076b8dca3e0491123245d17
+      x-skaffolder-id-resource: 60794f54a3e0491123246c9c
       x-skaffolder-resource: User
       x-skaffolder-crudAction: list
       x-skaffolder-crudType: 
@@ -399,9 +315,9 @@ paths:
                   $ref: "#/components/schemas/User"
   "/user/{id}":
     delete:
-      x-skaffolder-id: 6076b8dca3e0491123245d1c
+      x-skaffolder-id: 60794f54a3e0491123246ca1
       x-skaffolder-name: delete
-      x-skaffolder-id-resource: 6076b8dca3e0491123245d17
+      x-skaffolder-id-resource: 60794f54a3e0491123246c9c
       x-skaffolder-resource: User
       x-skaffolder-crudAction: delete
       x-skaffolder-crudType: 
@@ -425,9 +341,9 @@ paths:
         "200":
           description: OK
     get:
-      x-skaffolder-id: 6076b8dca3e0491123245d1d
+      x-skaffolder-id: 60794f54a3e0491123246ca5
       x-skaffolder-name: get
-      x-skaffolder-id-resource: 6076b8dca3e0491123245d17
+      x-skaffolder-id-resource: 60794f54a3e0491123246c9c
       x-skaffolder-resource: User
       x-skaffolder-crudAction: get
       x-skaffolder-crudType: 
@@ -455,9 +371,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
     post:
-      x-skaffolder-id: 6076b8dca3e0491123245d1e
+      x-skaffolder-id: 60794f54a3e0491123246ca0
       x-skaffolder-name: update
-      x-skaffolder-id-resource: 6076b8dca3e0491123245d17
+      x-skaffolder-id-resource: 60794f54a3e0491123246c9c
       x-skaffolder-resource: User
       x-skaffolder-crudAction: update
       x-skaffolder-crudType: 
@@ -500,9 +416,9 @@ components:
       bearerFormat: JWT
   schemas:
     Taxpayerinfo:
-      x-skaffolder-id: 6076bd16a3e0491123245da6
-      x-skaffolder-id-db: 6076b8dca3e0491123245d0e
-      x-skaffolder-id-entity: 6076bd16a3e0491123245d8b
+      x-skaffolder-id: 60794fa8a3e0491123246d07
+      x-skaffolder-id-db: 60794f54a3e0491123246c93
+      x-skaffolder-id-entity: 60794fa7a3e0491123246d04
       x-skaffolder-url: /taxpayerinfo
       properties:
         _id:
@@ -510,153 +426,23 @@ components:
           x-skaffolder-required: true
         BIRFormNumber:
           type: number
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d8c
+          x-skaffolder-id-attr: 60794fa7a3e0491123246d05
           x-skaffolder-type: Number
           x-skaffolder-required: true
         BirthDateOrgDate:
           type: integer
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d94
+          x-skaffolder-id-attr: 60794fa7a3e0491123246d06
           x-skaffolder-type: Date
           x-skaffolder-required: true
-        BirthPlace:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d95
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        Citizenship:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d98
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        CivilStatus:
-          type: boolean
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d93
-          x-skaffolder-type: Boolean
-          x-skaffolder-required: true
-        DateOfArrivalInPhilippines:
-          type: integer
-          x-skaffolder-id-attr: 6076bd16a3e0491123245da4
-          x-skaffolder-type: Date
-        EmailAddress:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245da3
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        FathersName:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d97
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        FaxNo:
-          type: number
-          x-skaffolder-id-attr: 6076bd16a3e0491123245da1
-          x-skaffolder-type: Number
-        FirstName:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d8d
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        Gender:
-          type: boolean
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d92
-          x-skaffolder-type: Boolean
-          x-skaffolder-required: true
-        IDEffectiveDate:
-          type: integer
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d9b
-          x-skaffolder-type: Date
-          x-skaffolder-required: true
-        IDExpiryDate:
-          type: integer
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d9c
-          x-skaffolder-type: Date
-          x-skaffolder-required: true
-        IDIssuer:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d9d
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        IDNo:
-          type: number
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d9a
-          x-skaffolder-type: Number
-          x-skaffolder-required: true
-        IDType:
-          type: boolean
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d99
-          x-skaffolder-type: Boolean
-          x-skaffolder-required: true
-        IssuePlaceCountry:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d9e
-          x-skaffolder-type: String
-        LandlineNo:
-          type: number
-          x-skaffolder-id-attr: 6076bd16a3e0491123245da0
-          x-skaffolder-type: Number
-          x-skaffolder-required: true
-        LastName:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d8f
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        MiddleName:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d8e
-          x-skaffolder-type: String
-        MobileNo:
-          type: number
-          x-skaffolder-id-attr: 6076bd16a3e0491123245da2
-          x-skaffolder-type: Number
-          x-skaffolder-required: true
-        MothersMaidenName:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d96
-          x-skaffolder-type: String
-          x-skaffolder-required: true
-        NickName:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d91
-          x-skaffolder-type: String
-        PrefferedContactType:
-          type: boolean
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d9f
-          x-skaffolder-type: Boolean
-          x-skaffolder-required: true
-        RegisteredName:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245da5
-          x-skaffolder-type: String
-        Suffix:
-          type: string
-          x-skaffolder-id-attr: 6076bd16a3e0491123245d90
-          x-skaffolder-type: String
       x-skaffolder-relations: 
       required:
         - _id
         - BIRFormNumber
         - BirthDateOrgDate
-        - BirthPlace
-        - Citizenship
-        - CivilStatus
-        - EmailAddress
-        - FathersName
-        - FirstName
-        - Gender
-        - IDEffectiveDate
-        - IDExpiryDate
-        - IDIssuer
-        - IDNo
-        - IDType
-        - LandlineNo
-        - LastName
-        - MobileNo
-        - MothersMaidenName
-        - PrefferedContactType
     User:
-      x-skaffolder-id: 6076b8dca3e0491123245d17
-      x-skaffolder-id-db: 6076b8dca3e0491123245d0e
-      x-skaffolder-id-entity: 6076b8dca3e0491123245d0f
+      x-skaffolder-id: 60794f54a3e0491123246c9c
+      x-skaffolder-id-db: 60794f54a3e0491123246c93
+      x-skaffolder-id-entity: 60794f54a3e0491123246c94
       x-skaffolder-url: /user
       x-skaffolder-type: User
       properties:
@@ -665,28 +451,28 @@ components:
           x-skaffolder-required: true
         mail:
           type: string
-          x-skaffolder-id-attr: 6076b8dca3e0491123245d12
+          x-skaffolder-id-attr: 60794f54a3e0491123246c97
           x-skaffolder-type: String
         name:
           type: string
-          x-skaffolder-id-attr: 6076b8dca3e0491123245d13
+          x-skaffolder-id-attr: 60794f54a3e0491123246c98
           x-skaffolder-type: String
         password:
           type: string
-          x-skaffolder-id-attr: 6076b8dca3e0491123245d11
+          x-skaffolder-id-attr: 60794f54a3e0491123246c96
           x-skaffolder-type: String
           x-skaffolder-required: true
         roles:
           type: string
-          x-skaffolder-id-attr: 6076b8dca3e0491123245d15
+          x-skaffolder-id-attr: 60794f54a3e0491123246c9a
           x-skaffolder-type: String
         surname:
           type: string
-          x-skaffolder-id-attr: 6076b8dca3e0491123245d14
+          x-skaffolder-id-attr: 60794f54a3e0491123246c99
           x-skaffolder-type: String
         username:
           type: string
-          x-skaffolder-id-attr: 6076b8dca3e0491123245d10
+          x-skaffolder-id-attr: 60794f54a3e0491123246c95
           x-skaffolder-type: String
           x-skaffolder-required: true
       x-skaffolder-relations: 
@@ -695,40 +481,43 @@ components:
         - password
         - username
   x-skaffolder-db:
-    - x-skaffolder-id: 6076b8dca3e0491123245d0e
+    - x-skaffolder-id: 60794f54a3e0491123246c93
       x-skaffolder-name: Orus_db
   x-skaffolder-page:
-    - x-skaffolder-id: 6076b8dca3e0491123245d16
+    - x-skaffolder-id: 60794f54a3e0491123246c9b
       x-skaffolder-name: Home
       x-skaffolder-url: /home
       x-skaffolder-template: 
       x-skaffolder-resource: 
       x-skaffolder-services: 
       x-skaffolder-nesteds: 
-      x-skaffolder-links: 
+      x-skaffolder-links:
+        - 60794fb0a3e0491123246d0f
       x-skaffolder-roles: []
-    - x-skaffolder-id: 6076bdbba3e0491123245db5
+    - x-skaffolder-id: 60794fb0a3e0491123246d09
       x-skaffolder-name: TaxpayerinfoEdit
       x-skaffolder-url: /taxpayerinfos/{id}
       x-skaffolder-template: Edit_Crud
-      x-skaffolder-resource: 6076bd16a3e0491123245da6
+      x-skaffolder-resource: 60794fa8a3e0491123246d07
       x-skaffolder-services:
-        - 6076bd31a3e0491123245da8
-        - 6076bd53a3e0491123245dab
-        - 6076bd5ba3e0491123245dad
+        - 60794fb0a3e0491123246d0a
+        - 60794fb0a3e0491123246d0b
+        - 60794fb0a3e0491123246d0c
       x-skaffolder-nesteds: 
       x-skaffolder-links: 
-    - x-skaffolder-id: 6076bde5a3e0491123245db7
-      x-skaffolder-name: UserEdit
-      x-skaffolder-url: /users/{id}
-      x-skaffolder-template: Edit_Crud
-      x-skaffolder-resource: 6076b8dca3e0491123245d17
+      x-skaffolder-roles: []
+    - x-skaffolder-id: 60794fb0a3e0491123246d0f
+      x-skaffolder-name: TaxpayerinfoList
+      x-skaffolder-url: /taxpayerinfos
+      x-skaffolder-template: List_Crud
+      x-skaffolder-resource: 60794fa8a3e0491123246d07
       x-skaffolder-services:
-        - 6076b8dca3e0491123245d1d
-        - 6076b8dca3e0491123245d1e
-        - 6076b8dca3e0491123245d1f
+        - 60794fb0a3e0491123246d10
+        - 60794fb0a3e0491123246d11
       x-skaffolder-nesteds: 
-      x-skaffolder-links: 
+      x-skaffolder-links:
+        - 60794fb0a3e0491123246d09
+      x-skaffolder-roles: []
   x-skaffolder-roles: 
-    - x-skaffolder-id: 6076b8dca3e0491123245d19
+    - x-skaffolder-id: 60794f54a3e0491123246c9e
       x-skaffolder-name: ADMIN

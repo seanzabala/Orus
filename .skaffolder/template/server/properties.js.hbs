@@ -6,18 +6,10 @@
 **** END PROPERTIES SKAFFOLDER ****
 module.exports = {
 	{{#each dbs}}
-	{{name}}: {
-        name: "{{lowercase name}}",
-        user: "root",
-        password: null,
-        host: process.env.DB_HOST || "127.0.0.1",
-        port: 3306,
-        dialect: "mysql"
-    },
-    
+	{{name}}_dbUrl: (process.env.DB_HOST || 'localhost') + ':27017/{{name}}',
 	{{/each}}
     publicPath: '../client/build',
-	port: 3000,
-    tokenSecret: "Insert Your Secret Token",
-    api: "/api"
+	port: process.env.NODE_PORT || 3000,
+    tokenSecret: 'Insert Your Secret Token',
+    api: process.env.NODE_API != null ? process.env.NODE_API : '/api'
 }

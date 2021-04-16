@@ -25,18 +25,16 @@ import TaxpayerinfoActions from "../redux/actions/TaxpayerinfoActions";
 
 /** APIs
 
-* actionsTaxpayerinfo.get
-*	@description CRUD ACTION get
-*	@returns Taxpayerinfo
+* actionsTaxpayerinfo.create
+*	@description CRUD ACTION create
 *
 * actionsTaxpayerinfo.update
 *	@description CRUD ACTION update
-*	@param ObjectId id - Id Taxpayerinfo
-*	@returns Taxpayerinfo
+*	@param ObjectId id - Id
 *
-* actionsTaxpayerinfo.create
-*	@description CRUD ACTION create
-*	@param Taxpayerinfo obj - Object to insert
+* actionsTaxpayerinfo.get
+*	@description CRUD ACTION get
+*	@param ObjectId id - Id resource
 *
 
 **/

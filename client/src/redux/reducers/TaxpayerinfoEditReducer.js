@@ -14,11 +14,11 @@ export default function TaxpayerinfoEditReducer(state = initialState, action) {
 
 
     // START REDUCERS
-    case types.GET_TAXPAYERINFO_SUCCESS:
+    case types.CREATE_TAXPAYERINFO_SUCCESS:
       return { ...state, taxpayerinfo: action.payload };
     case types.UPDATE_TAXPAYERINFO_SUCCESS:
       return { ...state, taxpayerinfo: action.payload };
-    case types.CREATE_TAXPAYERINFO_SUCCESS:
+    case types.GET_TAXPAYERINFO_SUCCESS:
       return { ...state, taxpayerinfo: action.payload };
      // END REDUCERS
     

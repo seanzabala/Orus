@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 /* START MY VIEWS IMPORT */
 
 import TaxpayerinfoEdit from "./pages/TaxpayerinfoEdit";
-import UserEdit from "./pages/UserEdit";
+import TaxpayerinfoList from "./pages/TaxpayerinfoList";
 
 /* END MY VIEWS IMPORT */
 
@@ -40,8 +40,8 @@ class Routes extends Component {
 
               {/* START MY VIEWS */}
 
-              <Route exact path="/taxpayerinfos/:id" component={ TaxpayerinfoEdit }  />
-              <Route exact path="/users/:id" component={ UserEdit }  />
+              <PrivateRoute exact path="/taxpayerinfos/:id" component={ TaxpayerinfoEdit }  />
+              <PrivateRoute exact path="/taxpayerinfos" component={ TaxpayerinfoList }  />
 
              {/* END MY VIEWS */}
 

@@ -4,8 +4,8 @@
     "_partials": []
 }
 **** END PROPERTIES SKAFFOLDER ****
-# Create image based on the Skaffolder NodeJS Sequelize image
-FROM skaffolder/nodejs-sequalize-base
+# Create image based on the Skaffolder Node ES6 image
+FROM skaffolder/node-base
 
 # Copy source files
 WORKDIR /source 
@@ -26,4 +26,4 @@ ENV NODE_PORT 3000
 ENV NODE_API /api
 
 # Expose port
-EXPOSE 80
+EXPOSE 3000

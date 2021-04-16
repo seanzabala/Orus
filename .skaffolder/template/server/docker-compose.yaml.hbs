@@ -13,15 +13,11 @@ services:
   # Database
   database:
     # image to build container from
-    image: mysql:5.7.24 
+    image: mongo:4.1 
     ports:
       - "27018:27017"
     networks:
       - backend_network
-    environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=1
-    volumes:{{#each dbs}}
-       - ./server/script/schemaDb_{{name}}_mysql.sql:/docker-entrypoint-initdb.d/schemaDb_{{name}}_mysql.sql{{/each}}
   
   # Backend
   backend: 

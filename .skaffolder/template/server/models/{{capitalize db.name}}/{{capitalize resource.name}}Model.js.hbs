@@ -8,6 +8,22 @@
 import {{capitalize resource.name}}ModelGenerated from "./generated/{{capitalize resource.name}}ModelGenerated";
 
 const customModel = {
+  
+  /**
+   * Customize here your schema with custom attributes
+   * 
+   * EXAMPLE:
+    
+    init() {
+      let schema = {{capitalize resource.name}}ModelGenerated.init();
+  
+      schema.add({
+        extraCustomField: Object
+      });
+    },
+     
+   */
+
 
   /**
    * Override here your custom queries

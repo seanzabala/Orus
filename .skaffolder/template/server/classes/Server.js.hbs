@@ -80,7 +80,7 @@ class Server {
     // Swagger
     const swaggerDocument = yaml.load("./swagger.yaml");
     this.app.use(
-      "/api/docs",
+      properties.api + "/docs",
       swaggerUi.serve,
       swaggerUi.setup(swaggerDocument)
     );
@@ -115,7 +115,10 @@ class Server {
     await server.listen(properties.port);
     Logger.info("Server started on port " + properties.port);
     Logger.info(
-      "Swagger docs at http://localhost:" + properties.port + "/api/docs"
+      "Swagger docs at http://localhost:" +
+        properties.port +
+        properties.api +
+        "/docs"
     );
 
     // Import controllers

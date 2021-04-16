@@ -18,15 +18,15 @@
     ]
 }
 **** END PROPERTIES SKAFFOLDER ****
-// Import Sequelize
-import Sequelize from "sequelize";
-import InitSchema from "../models/schema_{{db.name}}";
-import UserModel from "../models/{{capitalize db.name}}/UserModel";
-
+// Import Mongoose
+import mongoose from "mongoose";
 // Logging
 import Logger from "./Logger";
 // Properties
 import properties from "../properties.js";
+
+// Start Import Models
+// End Import Models
 
 class Database {
   constructor() {}
@@ -36,22 +36,10 @@ class Database {
    */
   async init() {
     await this.authenticate();
-    Logger.info(
-      "Database connected at: " +
-        properties.{{db.name}}.host +
-        ":" +
-        properties.{{db.name}}.port +
-        "//" +
-        properties.{{db.name}}.user +
-        "@" +
-        properties.{{db.name}}.name
-    );
+    Logger.info("MongoDB connected at: " + properties.{{db.name}}_dbUrl);
 
-    // Import schema
-    InitSchema();
-
-    await UserModel.createAdminUser();
-
+    // Start Init Models
+    // End Init Models
   }
 
   /**
@@ -59,25 +47,13 @@ class Database {
    */
   async authenticate() {
     Logger.info("Authenticating to the databases...");
-
-    const sequelize = new Sequelize(
-      properties.{{db.name}}.name,
-      properties.{{db.name}}.user,
-      properties.{{db.name}}.password,
-      {
-        host: properties.{{db.name}}.host,
-        dialect: properties.{{db.name}}.dialect,
-        port: properties.{{db.name}}.port,
-        logging: false
-      }
-    );
-    this.dbConnection_{{db.name}} = sequelize;
-
     try {
-      await sequelize.sync();
+      this.dbConnection_{{db.name}} = await mongoose.connect(
+        "mongodb://" + properties.{{db.name}}_dbUrl,
+        { useNewUrlParser: true }
+      );
     } catch (err) {
-      // Catch error here
-      Logger.error(`Failed connection to the DB`);
+      Logger.error(`Failed connection to the DB: ${err.message}`);
       Logger.error(err);
       await new Promise(resolve => setTimeout(resolve, 5000));
       await this.authenticate();

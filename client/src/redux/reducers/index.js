@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 // START IMPORT REDUCERS
 import HomeReducer from "./HomeReducer";
 import TaxpayerinfoEditReducer from "./TaxpayerinfoEditReducer";
-import UserEditReducer from "./UserEditReducer";
+import TaxpayerinfoListReducer from "./TaxpayerinfoListReducer";
 
 // END IMPORT REDUCERS
 
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   // START COMBINE REDUCERS
 	HomeReducer,
 	TaxpayerinfoEditReducer,
-	UserEditReducer,
+	TaxpayerinfoListReducer,
  // END COMBINE REDUCERS
 
 });

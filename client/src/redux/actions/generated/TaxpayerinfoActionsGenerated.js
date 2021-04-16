@@ -116,25 +116,6 @@ let actionsFunction = {
     return { type: types.UPDATE_TAXPAYERINFO_SUCCESS, payload: taxpayerinfo };
   },
 
-	
-  // Save taxpayerinfo
-  saveTaxpayerinfo: function(taxpayerinfo) {
-    return function(dispatch) {
-      return TaxpayerinfoApi
-        .saveTaxpayerinfo(taxpayerinfo)
-        .then(taxpayerinfo => {
-          dispatch(actionsFunction.saveTaxpayerinfoSuccess(taxpayerinfo));
-        })
-        .catch(error => {
-          throw error;
-        });
-    };
-  },
-
-  saveTaxpayerinfoSuccess: function(taxpayerinfo) {
-    return { type: types.UPDATE_TAXPAYERINFO_SUCCESS, payload: taxpayerinfo };
-  },
-
 
 };
 

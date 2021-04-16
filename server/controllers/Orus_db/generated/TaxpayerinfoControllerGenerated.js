@@ -32,7 +32,6 @@ const generatedControllers = {
     router.get(baseUrl + "/:id", authorize([]), TaxpayerinfoController.get);
     router.get(baseUrl + "", authorize([]), TaxpayerinfoController.list);
     router.post(baseUrl + "/:id", authorize([]), TaxpayerinfoController.update);
-    router.post(baseUrl + "/:id", authorize([]), TaxpayerinfoController.update);
   },
 
 
@@ -42,7 +41,6 @@ const generatedControllers = {
   /**
   * TaxpayerinfoModel.create
   *   @description CRUD ACTION create
-  *   @param Taxpayerinfo obj Object to insert
   *
   */
   create: async (req, res) => {
@@ -58,7 +56,7 @@ const generatedControllers = {
   /**
   * TaxpayerinfoModel.delete
   *   @description CRUD ACTION delete
-  *   @param ObjectId id Id Taxpayerinfo
+  *   @param ObjectId id Id
   *
   */
   delete: async (req, res) => {
@@ -74,7 +72,7 @@ const generatedControllers = {
   /**
   * TaxpayerinfoModel.get
   *   @description CRUD ACTION get
-  *   @returns Taxpayerinfo
+  *   @param ObjectId id Id resource
   *
   */
   get: async (req, res) => {
@@ -90,7 +88,6 @@ const generatedControllers = {
   /**
   * TaxpayerinfoModel.list
   *   @description CRUD ACTION list
-  *   @returns ARRAY OF Taxpayerinfo
   *
   */
   list: async (req, res) => {
@@ -107,25 +104,7 @@ const generatedControllers = {
   /**
   * TaxpayerinfoModel.update
   *   @description CRUD ACTION update
-  *   @param ObjectId id Id Taxpayerinfo
-  *   @returns Taxpayerinfo
-  *
-  */
-  update: async (req, res) => {
-    try {
-      const result = await TaxpayerinfoModel.update(req.body);
-      res.json(result);
-    } catch (err) {
-      const safeErr = ErrorManager.getSafeError(err);
-      res.status(safeErr.status).json(safeErr);
-    }
-  },
-  
-  /**
-  * TaxpayerinfoModel.update
-  *   @description CRUD ACTION update
-  *   @param ObjectId id Id Taxpayerinfo
-  *   @returns Taxpayerinfo
+  *   @param ObjectId id Id
   *
   */
   update: async (req, res) => {

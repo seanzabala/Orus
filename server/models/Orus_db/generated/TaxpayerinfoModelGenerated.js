@@ -17,12 +17,56 @@
  */
 // Database
 import Database from "../../../classes/Database_Orus_db";
-import Sequelize from "sequelize";
+import mongoose, { Schema } from "mongoose";
 
 // Logger
 import Logger from "../../../classes/Logger";
 
 const generatedModel = {
+  /**
+   * Init  schema
+   */
+  init() {
+    const db = Database.getConnection();
+
+    /**
+      * Taxpayerinfo
+      */
+    const taxpayerinfoSchema = new mongoose.Schema({
+      BIRFormNumber: {
+        type: "Number", 
+        required: true
+      },
+      BirthDateOrgDate: {
+        type: "Date", 
+        required: true
+      },
+      // RELATIONS
+      
+      
+      // EXTERNAL RELATIONS
+      /*
+      */
+    });
+
+    generatedModel.setModel(db.connection.model("Taxpayerinfo", taxpayerinfoSchema));
+
+    return taxpayerinfoSchema;
+  },
+
+  /**
+   * Set Model
+   */
+  setModel: model => {
+    generatedModel.model = model;
+  },
+
+  /**
+   * Get model
+   */
+  getModel: () => {
+    return generatedModel.model;
+  },
 
   // Start queries
     
@@ -33,70 +77,50 @@ const generatedModel = {
   /**
   * TaxpayerinfoModel.create
   *   @description CRUD ACTION create
-  *   @param Taxpayerinfo obj Object to insert
   *
   */
   async create(item) {
-    let result = await Database.getConnection().models.Taxpayerinfo.create(item);    return result;
+    const obj = new generatedModel.model(item);
+    return await obj.save();
   },
   
   /**
   * TaxpayerinfoModel.delete
   *   @description CRUD ACTION delete
-  *   @param ObjectId id Id Taxpayerinfo
+  *   @param ObjectId id Id
   *
   */
   async delete(id) {
-    return await Database.getConnection().models.Taxpayerinfo.destroy({ where: { _id: id } });
+    return await generatedModel.model.findByIdAndRemove(id);
   },
   
   /**
   * TaxpayerinfoModel.get
   *   @description CRUD ACTION get
-  *   @returns Taxpayerinfo
+  *   @param ObjectId id Id resource
   *
   */
   async get(id) {
-    let result = await Database.getConnection().models.Taxpayerinfo.findByPk(id);
-    return result;
+    return await generatedModel.model.findOne({ _id : id });
   },
   
   /**
   * TaxpayerinfoModel.list
   *   @description CRUD ACTION list
-  *   @returns ARRAY OF Taxpayerinfo
   *
   */
-  async list() { 
-    return await Database.getConnection().models.Taxpayerinfo.findAll();
-      },
-  
-  /**
-  * TaxpayerinfoModel.update
-  *   @description CRUD ACTION update
-  *   @param ObjectId id Id Taxpayerinfo
-  *   @returns Taxpayerinfo
-  *
-  */
-  async update(item) { 
-    let result = await Database.getConnection().models.Taxpayerinfo.update(item, {
-      where: { _id: item._id }
-    });
-    return result;
+  async list() {
+    return await generatedModel.model.find();
   },
   
   /**
   * TaxpayerinfoModel.update
   *   @description CRUD ACTION update
-  *   @param ObjectId id Id Taxpayerinfo
-  *   @returns Taxpayerinfo
+  *   @param ObjectId id Id
   *
   */
   async update(item) { 
-    let result = await Database.getConnection().models.Taxpayerinfo.update(item, {
-      where: { _id: item._id }
-    });
-    return result;
+    return await generatedModel.model.findOneAndUpdate({ _id: item._id }, item, {'new': true});
   },
   
 

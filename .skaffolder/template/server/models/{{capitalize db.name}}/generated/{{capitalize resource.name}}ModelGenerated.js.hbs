@@ -24,13 +24,75 @@
  */
 // Database
 import Database from "../../../classes/Database_{{capitalize db.name}}";
-import Sequelize from "sequelize";{{#equal resource.name 'User'}}
-import RolesModel from "../RolesModel";{{/equal}}
+import mongoose, { Schema } from "mongoose";
 
 // Logger
 import Logger from "../../../classes/Logger";
 
 const generatedModel = {
+  /**
+   * Init  schema
+   */
+  init() {
+    const db = Database.getConnection();
+
+    {{#notNull resource._entity}}
+    /**
+      * {{resource._entity.name}}
+      */
+    const {{lowercase resource._entity.name}}Schema = new mongoose.Schema({
+      {{#each resource._entity._attrs}}
+      {{name}}: {{#equal ../resource.name 'User'}}{{#equal name 'roles'}}[{{/equal}}{{/equal}}{
+        type: "{{toJSType type}}"{{#required}}, 
+        required: true{{/required}}{{#unique}},
+        unique: true, {{/unique}}{{#if _enum}},
+        enum: {{#joinObj _enum 'name'}}{{/joinObj}}, {{/if}}
+      }{{#equal ../resource.name 'User'}}{{#equal name 'roles'}}]{{/equal}}{{/equal}},
+      {{/each}}
+      // RELATIONS
+      {{#each resource._entity._relations}}
+        {{#equal _ent1.name ../resource._entity.name}}
+      {{name}}: {{#equal type 'm:m'}}[{{/equal}}{
+        type: Schema.ObjectId{{#required}}, 
+        required: true{{/required}},
+        ref: "{{_ent2.name}}"
+      }{{#equal type 'm:m'}}]{{/equal}},
+        {{/equal}}
+      {{/each}}
+      
+      
+      // EXTERNAL RELATIONS
+      /*
+      {{#each resource._entity._relations}}{{#notEqual _ent1.name ../resource._entity.name}}{{name}}: {{#equal type 'm:m'}}[{{/equal}}{
+        type: Schema.ObjectId{{#required}}, 
+        required: true{{/required}},
+        ref: "{{_ent1.name}}"
+      }{{#equal type 'm:m'}}]{{/equal}},
+      {{/notEqual}}{{/each}}*/
+    });
+
+    generatedModel.setModel(db.connection.model("{{capitalize resource._entity.name}}", {{lowercase resource._entity.name}}Schema));
+    {{#equal resource._entity.name "User"}}
+    generatedModel.createAdminUser();
+    {{/equal}}
+    {{/notNull}}
+
+    return {{lowercase resource._entity.name}}Schema;
+  },
+
+  /**
+   * Set Model
+   */
+  setModel: model => {
+    generatedModel.model = model;
+  },
+
+  /**
+   * Get model
+   */
+  getModel: () => {
+    return generatedModel.model;
+  },
 
   // Start queries
     
@@ -48,33 +110,8 @@ const generatedModel = {
   *   @returns {{returnType}}{{/notEmpty}}
   *
   */
-  async {{name}}() { {{#notEqual ../resource._entity.name "User"}}
-    return await Database.getConnection().models.{{../resource.name}}.findAll();
-    {{/notEqual}}{{#equal ../resource._entity.name "User"}}
-    let list = await Database.getConnection().models.User.findAll(
-      {
-        raw: true
-      },
-      {
-        attributes: {
-          exclude: ["password"]
-        }
-      }
-    );
-
-    // Find roles
-    for (let i in list) {
-      let roles = await Database.getConnection().models.Roles.findAll({
-        where: {
-          _user: list[i]._id
-        },
-        raw: true
-      });
-      list[i].roles = roles.map(item => item.role);
-    }
-
-    return list;
-    {{/equal}}
+  async {{name}}() {
+    return await generatedModel.model.find(){{#equal ../resource._entity.name "User"}}.select("-password"){{/equal}};
   },
     {{/equal}}
     {{#equal crudAction 'get'}}
@@ -87,21 +124,7 @@ const generatedModel = {
   *
   */
   async {{name}}(id) {
-    let result = await Database.getConnection().models.{{../resource.name}}.findByPk(id{{#equal ../resource._entity.name "User"}}, {
-      attributes: {
-        exclude: ["password"]
-      }
-    }{{/equal}});{{#each ../resource._entity._relations}}{{#equal _ent1.name ../../resource._entity.name}}{{#equal type 'm:m'}}
-    let {{name}} = await result.get{{capitalize name}}({ raw: true });
-    result.dataValues.{{name}} = {{name}}.map(item => item._id);
-    {{/equal}}{{/equal}}{{/each}}
-    {{#equal ../resource._entity.name "User"}}
-
-    // Find roles
-    let roles = await result.getRoles({ raw: true });
-    result.dataValues.roles = roles.map(item => item.role);
-    {{/equal}}
-    return result;
+    return await generatedModel.model.findOne({ _id : id }){{#equal ../resource._entity.name "User"}}.select("-password"){{/equal}};
   },
     {{/equal}}
     {{#equal crudAction 'update'}}
@@ -117,28 +140,7 @@ const generatedModel = {
     delete item.password;
     {{/equal}}
 
-    let result = await Database.getConnection().models.{{../resource.name}}.update(item, {
-      where: { _id: item._id }
-    });{{#each ../resource._entity._relations}}{{#equal _ent1.name ../../resource._entity.name}}{{#equal type 'm:m'}}
-    result = await Database.getConnection().models.{{../../resource._entity.name}}.findByPk(item._id);
-    let {{name}} = await result.set{{capitalize name}}(item.{{name}});
-    result.{{name}} = {{name}};
-    {{/equal}}{{/equal}}{{/each}}{{#equal ../resource._entity.name "User"}}
-    // Update roles
-    result = await Database.getConnection().models.User.findByPk(item._id);
-    var roles = [];
-    for (let i in item.roles) {
-      let roleDb = await Database.getConnection().models.Roles.findOrCreate({
-        where: {
-          role: item.roles[i],
-          _user: item._id
-        }
-      });
-      roles.push(roleDb[0].dataValues._id);
-    }
-
-    result.setRoles(roles);{{/equal}}
-    return result;
+    return await generatedModel.model.findOneAndUpdate({ _id: item._id }, item, {'new': true});
   },
     {{/equal}}
     {{#equal crudAction 'delete'}}
@@ -151,7 +153,7 @@ const generatedModel = {
   *
   */
   async {{name}}(id) {
-    return await Database.getConnection().models.{{../resource.name}}.destroy({ where: { _id: id } });
+    return await generatedModel.model.findByIdAndRemove(id);
   },
     {{/equal}}
     {{#equal crudAction 'create'}}
@@ -164,26 +166,8 @@ const generatedModel = {
   *
   */
   async {{name}}(item) {
-    let result = await Database.getConnection().models.{{../resource.name}}.create(item);{{#each ../resource._entity._relations}}{{#equal _ent1.name ../../resource._entity.name}}{{#equal type 'm:m'}}
-    let {{name}} = await result.set{{capitalize name}}(item.{{name}});
-    result.{{name}} = {{name}};
-    {{/equal}}{{/equal}}{{/each}}{{#equal ../resource._entity.name "User"}}
-
-    // Create roles
-    var roles = [];
-    for (let i in item.roles) {
-      let roleDb = await Database.getConnection().models.Roles.findOrCreate({
-        where: {
-          role: item.roles[i],
-          _user: result._id
-        }
-      });
-      roles.push(roleDb[0].dataValues._id);
-    }
-
-    result.setRoles(roles);
-    {{/equal}}
-    return result;
+    const obj = new generatedModel.model(item);
+    return await obj.save();
   },
     {{/equal}}
     {{#startWith crudAction 'findBy'}}
@@ -196,7 +180,7 @@ const generatedModel = {
   *
   */
   async {{name}}(key) {
-    return await Database.getConnection().models.{{../resource.name}}.findAll({ where: { "{{#subStr name 6 }}{{/subStr}}": key } });
+    return await generatedModel.model.find({ '{{#subStr name 6 }}{{/subStr}}' : key});
   },
     {{/startWith}}
     {{#startWith crudAction 'get'}}
@@ -209,7 +193,7 @@ const generatedModel = {
   *
   */
   async {{name}}(id) {
-    return await Database.getConnection().models.{{../resource.name}}.findAll({ where: { {{#subStr name 3 }}{{/subStr}}: id } });
+    return await generatedModel.model.findOne({ _id : id}).populate("{{#subStr name 3 }}{{/subStr}}")
   },
     {{/startWith}}
   {{/each}}{{/notNull}}
@@ -226,25 +210,13 @@ const generatedModel = {
     // CUSTOMIZE THIS FUNCTION
     // if you want to change login method
 
-    let user = await Database.getConnection().models.User.findOne({
-      where: {
+    let user = await generatedModel.model
+      .findOne({
         username: username,
         password: password
-      },
-      raw: true
-    });
-    if (user) {
-      user.password = undefined;
-
-      let roles = await Database.getConnection().models.Roles.findAll({
-        where: {
-          _user: user._id
-        },
-        raw: true
-      });
-      user.roles = roles.map(item => item.role);
-    }
-
+      })
+      .lean();
+    if (user) user.password = undefined;
     return user;
   },
 
@@ -252,14 +224,9 @@ const generatedModel = {
    * Update password
    */
   updatePassword: async (idUser, password) => {
-    let user = await Database.getConnection().models.User.update(
-      {
-        password: password
-      },
-      {
-        where: { _id: idUser }
-      }
-    );
+    let user = await generatedModel.model.findOneAndUpdate({ _id: idUser }, {
+      password: password
+    });
     return user;
   },
 
@@ -267,22 +234,16 @@ const generatedModel = {
    * Create ADMIN user if it not exists
    */
   createAdminUser: async () => {
-    const count = await Database.getConnection().models.User.count();
+    const count = await generatedModel.model.collection.countDocuments();
     if (count == 0) {
       Logger.info("Create admin user");
-      var admin = {
+      var admin = new generatedModel.model({
         username: "admin",
         password:
           "62f264d7ad826f02a8af714c0a54b197935b717656b80461686d450f7b3abde4c553541515de2052b9af70f710f0cd8a1a2d3f4d60aa72608d71a63a9a93c0f5",
         roles: ["ADMIN"]
-      };
-      let res = await Database.getConnection().models.User.create(admin);
-
-      let role = {
-        role: "ADMIN",
-        _user: res._id
-      };
-      await Database.getConnection().models.Roles.create(role);
+      });
+      return await admin.save();
     }
   }
   {{/equal}}

@@ -17,13 +17,69 @@
  */
 // Database
 import Database from "../../../classes/Database_Orus_db";
-import Sequelize from "sequelize";
-import RolesModel from "../RolesModel";
+import mongoose, { Schema } from "mongoose";
 
 // Logger
 import Logger from "../../../classes/Logger";
 
 const generatedModel = {
+  /**
+   * Init  schema
+   */
+  init() {
+    const db = Database.getConnection();
+
+    /**
+      * User
+      */
+    const userSchema = new mongoose.Schema({
+      mail: {
+        type: "String"
+      },
+      name: {
+        type: "String"
+      },
+      password: {
+        type: "String", 
+        required: true
+      },
+      roles: [{
+        type: "String"
+      }],
+      surname: {
+        type: "String"
+      },
+      username: {
+        type: "String", 
+        required: true
+      },
+      // RELATIONS
+      
+      
+      // EXTERNAL RELATIONS
+      /*
+      */
+    });
+
+    generatedModel.setModel(db.connection.model("User", userSchema));
+    generatedModel.createAdminUser();
+
+    return userSchema;
+  },
+
+  /**
+   * Set Model
+   */
+  setModel: model => {
+    generatedModel.model = model;
+  },
+
+  /**
+   * Get model
+   */
+  getModel: () => {
+    return generatedModel.model;
+  },
 
   // Start queries
     
@@ -37,22 +93,8 @@ const generatedModel = {
   *
   */
   async create(item) {
-    let result = await Database.getConnection().models.User.create(item);
-
-    // Create roles
-    var roles = [];
-    for (let i in item.roles) {
-      let roleDb = await Database.getConnection().models.Roles.findOrCreate({
-        where: {
-          role: item.roles[i],
-          _user: result._id
-        }
-      });
-      roles.push(roleDb[0].dataValues._id);
-    }
-
-    result.setRoles(roles);
-    return result;
+    const obj = new generatedModel.model(item);
+    return await obj.save();
   },
   
   /**
@@ -62,7 +104,7 @@ const generatedModel = {
   *
   */
   async delete(id) {
-    return await Database.getConnection().models.User.destroy({ where: { _id: id } });
+    return await generatedModel.model.findByIdAndRemove(id);
   },
   
   /**
@@ -72,16 +114,7 @@ const generatedModel = {
   *
   */
   async get(id) {
-    let result = await Database.getConnection().models.User.findByPk(id, {
-      attributes: {
-        exclude: ["password"]
-      }
-    });
-
-    // Find roles
-    let roles = await result.getRoles({ raw: true });
-    result.dataValues.roles = roles.map(item => item.role);
-    return result;
+    return await generatedModel.model.findOne({ _id : id }).select("-password");
   },
   
   /**
@@ -89,30 +122,8 @@ const generatedModel = {
   *   @description CRUD ACTION list
   *
   */
-  async list() { 
-    let list = await Database.getConnection().models.User.findAll(
-      {
-        raw: true
-      },
-      {
-        attributes: {
-          exclude: ["password"]
-        }
-      }
-    );
-
-    // Find roles
-    for (let i in list) {
-      let roles = await Database.getConnection().models.Roles.findAll({
-        where: {
-          _user: list[i]._id
-        },
-        raw: true
-      });
-      list[i].roles = roles.map(item => item.role);
-    }
-
-    return list;
+  async list() {
+    return await generatedModel.model.find().select("-password");
   },
   
   /**
@@ -124,24 +135,7 @@ const generatedModel = {
   async update(item) { 
     delete item.password;
 
-    let result = await Database.getConnection().models.User.update(item, {
-      where: { _id: item._id }
-    });
-    // Update roles
-    result = await Database.getConnection().models.User.findByPk(item._id);
-    var roles = [];
-    for (let i in item.roles) {
-      let roleDb = await Database.getConnection().models.Roles.findOrCreate({
-        where: {
-          role: item.roles[i],
-          _user: item._id
-        }
-      });
-      roles.push(roleDb[0].dataValues._id);
-    }
-
-    result.setRoles(roles);
-    return result;
+    return await generatedModel.model.findOneAndUpdate({ _id: item._id }, item, {'new': true});
   },
   
 
@@ -156,25 +150,13 @@ const generatedModel = {
     // CUSTOMIZE THIS FUNCTION
     // if you want to change login method
 
-    let user = await Database.getConnection().models.User.findOne({
-      where: {
+    let user = await generatedModel.model
+      .findOne({
         username: username,
         password: password
-      },
-      raw: true
-    });
-    if (user) {
-      user.password = undefined;
-
-      let roles = await Database.getConnection().models.Roles.findAll({
-        where: {
-          _user: user._id
-        },
-        raw: true
-      });
-      user.roles = roles.map(item => item.role);
-    }
-
+      })
+      .lean();
+    if (user) user.password = undefined;
     return user;
   },
 
@@ -182,14 +164,9 @@ const generatedModel = {
    * Update password
    */
   updatePassword: async (idUser, password) => {
-    let user = await Database.getConnection().models.User.update(
-      {
-        password: password
-      },
-      {
-        where: { _id: idUser }
-      }
-    );
+    let user = await generatedModel.model.findOneAndUpdate({ _id: idUser }, {
+      password: password
+    });
     return user;
   },
 
@@ -197,22 +174,16 @@ const generatedModel = {
    * Create ADMIN user if it not exists
    */
   createAdminUser: async () => {
-    const count = await Database.getConnection().models.User.count();
+    const count = await generatedModel.model.collection.countDocuments();
     if (count == 0) {
       Logger.info("Create admin user");
-      var admin = {
+      var admin = new generatedModel.model({
         username: "admin",
         password:
           "62f264d7ad826f02a8af714c0a54b197935b717656b80461686d450f7b3abde4c553541515de2052b9af70f710f0cd8a1a2d3f4d60aa72608d71a63a9a93c0f5",
         roles: ["ADMIN"]
-      };
-      let res = await Database.getConnection().models.User.create(admin);
-
-      let role = {
-        role: "ADMIN",
-        _user: res._id
-      };
-      await Database.getConnection().models.Roles.create(role);
+      });
+      return await admin.save();
     }
   }
 };

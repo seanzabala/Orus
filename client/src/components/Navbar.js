@@ -91,7 +91,15 @@ class Navbar extends React.Component {
         <Divider />
         <List>
           {/* START LINK MENU */}
- {/* END LINK MENU */}
+            
+           <Link to="/taxpayerinfos">
+            <ListItem button key="Taxpayerinfo">
+              <ListItemIcon>
+                <ArrowForwardIos />
+              </ListItemIcon>
+              <ListItemText className="menu-text" primary="Taxpayerinfo" />
+            </ListItem>
+          </Link>{" "} {/* END LINK MENU */}
         </List>
       </div>
     );
